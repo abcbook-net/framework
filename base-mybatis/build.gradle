@@ -1,0 +1,35 @@
+buildscript {
+    /** 配置打包时的 maven 仓库地址 */
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+        mavenCentral()
+    }
+//	dependencies {
+//		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//	}
+}
+
+version = "${baseMybatisVersion}"
+
+// 引入的 jar 包管理
+dependencies {
+    /** 基础配置 */
+//	compile('org.springframework.boot:spring-boot-starter')
+
+    // druid 中展示页面需要 web 的支持
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+    /** 数据库部分 */
+    // 阿里连接池
+    compile("com.alibaba:druid:${druidVersion}")
+    // mysql 连接器
+    runtime("mysql:mysql-connector-java:${mysqlConnectorVersion}")
+    // mybatis
+    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisVersion}")
+    // PageHelper
+    compile("com.github.pagehelper:pagehelper-spring-boot-starter:${pageHelperVersion}")
+    // 通用 mapper
+    compile("tk.mybatis:mapper-spring-boot-starter:${mybatisMapperVersion}")
+
+}
