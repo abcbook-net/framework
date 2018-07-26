@@ -15,7 +15,7 @@ version = "${baseMybatisVersion}"
 // 引入的 jar 包管理
 dependencies {
     /** 基础配置 */
-//	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.springframework.boot:spring-boot-starter')
 
     // druid 中展示页面需要 web 的支持
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")

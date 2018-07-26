@@ -1,0 +1,30 @@
+buildscript {
+
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+        mavenCentral()
+    }
+//	dependencies {
+//		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//	}
+}
+
+//apply plugin: 'org.springframework.boot'
+
+dependencies {
+//	compile project(":framework-base")
+
+    // 基础
+//	compileOnly('org.springframework.boot:spring-boot-starter')
+    compileOnly("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    compile("commons-codec:commons-codec:${commonCodecVersion}")
+
+    // 测试
+//	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+
+
+}

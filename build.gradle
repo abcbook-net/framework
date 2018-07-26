@@ -3,7 +3,7 @@
  * 自定义属性(字段)的定义
  */
 ext {
-    baseMybatisVersion = '0.0.2-SNAPSHOT'
+    baseMybatisVersion = '0.0.1-SNAPSHOT'
 
     // spring
     springBootVersion = '2.0.3.RELEASE'

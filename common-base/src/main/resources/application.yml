@@ -1,0 +1,21 @@
+#开发环境使用的配置文件
+
+server-host: localhost
+
+spring:
+
+  redis:
+    host: ${server-host}
+    port: 6379
+#      password: Qilian!2#
+    database: 0
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+
+summer:
+  common:
+    redis-cache:
+      expiration: 1800
