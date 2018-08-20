@@ -493,6 +493,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
             orderBy.append(property);
             orderBy.append(" ");
             orderBy.append(direction);
+
+            count++;
         }
 
         return orderBy.toString();
