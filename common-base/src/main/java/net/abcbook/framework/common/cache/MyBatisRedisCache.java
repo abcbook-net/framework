@@ -1,4 +1,4 @@
-package net.abcbook.framework.common.cache;//package com.tinypace.framework.common.cache;
+//package net.abcbook.framework.common.cache;//package com.tinypace.framework.common.cache;
 //
 //import com.tinypace.framework.common.util.ApplicationContextProvider;
 //import lombok.extern.slf4j.Slf4j;

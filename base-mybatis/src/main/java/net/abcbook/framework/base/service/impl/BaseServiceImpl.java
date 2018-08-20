@@ -8,6 +8,8 @@ import net.abcbook.framework.base.model.BaseModel;
 import net.abcbook.framework.base.service.BaseService;
 import net.abcbook.framework.base.utils.Snowflake;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -342,6 +344,43 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         return page;
     }
 
+    /**
+     * @author summer
+     * @date 2017/12/29 下午3:43
+     * @param entity 用于封装条件的实体类
+     * @param pageable 排序方式
+     * @return com.github.pagehelper.Page<T>
+     * @description 根据传入的实体条件 / 页码 / 每页显示的数据量
+     * 查询出符合条件的分页对象
+     */
+    @Override
+    public Page<T> findPage(T entity, Pageable pageable) {
+        // 校验实体对象
+        if(entity == null){
+            return null;
+        }
+
+        entity.setIsDeleted(T.DELETED_FALSE);
+
+        // 校验排序对象
+        if(pageable == null){
+            return findPage(entity);
+        }
+
+        Integer pageSize = pageable.getPageSize();
+        pageSize = (pageSize == null || pageSize <= 0) ? T.PAGE_SIZE_DEFAULT : pageSize;
+        Integer pageNumber = pageable.getPageNumber();
+        pageNumber = (pageNumber == null || pageNumber <= 0) ? T.PAGE_NUM_DEFAULT : pageNumber;
+
+        // 如果没有排序值
+        if(pageable.getSort().isUnsorted()){
+            entity.setPageSize(pageSize);
+            entity.setPageNum(pageNumber);
+            return findPage(entity);
+        }
+
+        return findPage(entity, getOrderBy(pageable.getSort()));
+    }
 
     /**
      * 根据传入的实体条件 / 页码 / 每页显示的数据量
@@ -373,6 +412,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
      * @author summer
      * @date 2017/12/29 下午3:43
      * @param entity 用于封装条件的实体类
+     * @param orderBy 排序方式 例如: "update_time desc"
      * @return com.github.pagehelper.PageInfo<T>
      */
     @Override
@@ -390,4 +430,71 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         return pageInfo;
     }
 
+    /**
+     * 根据传入的实体条件 / 页码 / 每页显示的数据量
+     * 查询出符合条件的分页对象 (包括分页信息详情)
+     * @author summer
+     * @date 2017/12/29 下午3:43
+     * @param entity 用于封装条件的实体类
+     * @param pageable 排序方式
+     * @return com.github.pagehelper.PageInfo<T>
+     */
+    @Override
+    public PageInfo<T> findPageInfo(T entity, Pageable pageable) {
+        // 校验实体对象
+        if(entity == null){
+            return null;
+        }
+
+        entity.setIsDeleted(T.DELETED_FALSE);
+
+        // 校验排序对象
+        if(pageable == null){
+            return findPageInfo(entity);
+        }
+
+        Integer pageSize = pageable.getPageSize();
+        pageSize = (pageSize == null || pageSize <= 0) ? T.PAGE_SIZE_DEFAULT : pageSize;
+        Integer pageNumber = pageable.getPageNumber();
+        pageNumber = (pageNumber == null || pageNumber <= 0) ? T.PAGE_NUM_DEFAULT : pageNumber;
+
+        // 如果没有排序值
+        if(pageable.getSort() == null || pageable.getSort().isUnsorted()){
+            entity.setPageSize(pageSize);
+            entity.setPageNum(pageNumber);
+            return findPageInfo(entity);
+        }
+
+        return findPageInfo(entity, getOrderBy(pageable.getSort()));
+    }
+
+    /**
+     * @author summer
+     * @date 2018/8/21 上午2:04
+     * @description 根据传入的排序对象, 获取排序结构的字符串
+     * @param sort 排序对象
+     * @return java.lang.String
+     * @version V1.0.0-RELEASE
+     */
+    private String getOrderBy(Sort sort){
+        if(sort == null || sort.isUnsorted()){
+            return "";
+        }
+
+        StringBuilder orderBy = new StringBuilder(" ");
+        Integer count = 0;
+        // 拼接排序条件
+        for(Sort.Order order : sort){
+            String property = order.getProperty();
+            String direction = order.getDirection().name();
+            if(count > 0){
+                orderBy.append(", ");
+            }
+            orderBy.append(property);
+            orderBy.append(" ");
+            orderBy.append(direction);
+        }
+
+        return orderBy.toString();
+    }
 }

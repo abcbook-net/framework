@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public enum ResultEnum {
+public enum ResultEnum implements CodeEnumInteger{
 
     /**
      * 成功

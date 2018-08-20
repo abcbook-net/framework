@@ -2,6 +2,7 @@ package net.abcbook.framework.base.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -158,6 +159,17 @@ public interface BaseService<T> {
 
     /**
      * 根据传入的实体条件 / 页码 / 每页显示的数据量
+     * 查询出符合条件的分页对象
+     * @author summer
+     * @date 2017/12/29 下午3:43
+     * @param entity 用于封装条件的实体类
+     * @param pageable 排序方式
+     * @return com.github.pagehelper.Page<T>
+     */
+    Page<T> findPage(T entity, Pageable pageable);
+
+    /**
+     * 根据传入的实体条件 / 页码 / 每页显示的数据量
      * 查询出符合条件的分页对象 (包括分页信息的详情)
      * @author summer
      * @date 2017/12/29 下午3:43
@@ -175,4 +187,15 @@ public interface BaseService<T> {
      * @return com.github.pagehelper.PageInfo<T>
      */
      PageInfo<T> findPageInfo(T entity, String orderBy);
+
+    /**
+     * 根据传入的实体条件 / 页码 / 每页显示的数据量
+     * 查询出符合条件的分页对象
+     * @author summer
+     * @date 2017/12/29 下午3:43
+     * @param entity 用于封装条件的实体类
+     * @param pageable 排序方式
+     * @return com.github.pagehelper.Page<T>
+     */
+     PageInfo<T> findPageInfo(T entity, Pageable pageable);
 }

@@ -32,4 +32,7 @@ dependencies {
     // 通用 mapper
     compile("tk.mybatis:mapper-spring-boot-starter:${mybatisMapperVersion}")
 
+    // 为分页引入 pageable 对象
+    compile("org.springframework.data:spring-data-commons:${springBootVersion}")
+
 }
