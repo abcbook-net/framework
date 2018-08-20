@@ -372,13 +372,16 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         Integer pageNumber = pageable.getPageNumber();
         pageNumber = (pageNumber == null || pageNumber <= 0) ? T.PAGE_NUM_DEFAULT : pageNumber;
 
+        // 设置分页信息
+        entity.setPageSize(pageSize);
+        entity.setPageNum(pageNumber);
+
         // 如果没有排序值
         if(pageable.getSort().isUnsorted()){
-            entity.setPageSize(pageSize);
-            entity.setPageNum(pageNumber);
             return findPage(entity);
         }
 
+        // 返回有排序值的结果
         return findPage(entity, getOrderBy(pageable.getSort()));
     }
 
@@ -458,13 +461,16 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         Integer pageNumber = pageable.getPageNumber();
         pageNumber = (pageNumber == null || pageNumber <= 0) ? T.PAGE_NUM_DEFAULT : pageNumber;
 
+        // 设置分页信息
+        entity.setPageSize(pageSize);
+        entity.setPageNum(pageNumber);
+
         // 如果没有排序值
         if(pageable.getSort() == null || pageable.getSort().isUnsorted()){
-            entity.setPageSize(pageSize);
-            entity.setPageNum(pageNumber);
             return findPageInfo(entity);
         }
 
+        // 返回有排序的查询结果
         return findPageInfo(entity, getOrderBy(pageable.getSort()));
     }
 
