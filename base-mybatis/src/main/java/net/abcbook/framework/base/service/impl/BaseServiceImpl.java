@@ -282,6 +282,23 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
 
     /**
      * @author summer
+     * @date 2018/8/21 下午1:57
+     * @description 完全根据查询条件进行查询, 不会自动排查被标记成已删除的记录
+     * @param entity 查询条件
+     * @return T
+     * @version V1.0.0-RELEASE
+     */
+    @Override
+    public T getAllByParameters(T entity){
+        if(entity == null){
+            return null;
+        }
+
+        return mapper.selectOne(entity);
+    }
+
+    /**
+     * @author summer
      * @date 2017/12/29 下午3:17
      * @param entity 用于封装查询条件的实体
      * @return java.util.List<T>
@@ -295,6 +312,24 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         }
 
         entity.setIsDeleted(T.DELETED_FALSE);
+
+        return mapper.select(entity);
+    }
+
+    /**
+     * @author summer
+     * @date 2018/8/21 下午1:54
+     * @description 完全根据查询条件进行查询, 不会自动排查被标记成已删除的记录
+     * @param entity 查询条件
+     * @return java.util.List<T>
+     * @version V1.0.0-RELEASE
+     */
+    @Override
+    public List<T> listAll(T entity){
+        // 参数合法性校验
+        if(entity == null){
+            return null;
+        }
 
         return mapper.select(entity);
     }
@@ -323,6 +358,26 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
 
     /**
      * @author summer
+     * @date 2018/8/21 下午2:00
+     * @description 根据传入的查询条件查询出所有满足条件的信息, 并进行分页, 不会自动过滤被标记成已删除的数据
+     * @param entity
+     * @return com.github.pagehelper.Page<T>
+     * @version V1.0.0-RELEASE
+     */
+    @Override
+    public Page<T> findPageAll(T entity){
+        if(entity == null){
+            return null;
+        }
+
+        Page<T> page = PageHelper.startPage(entity.getPageNum(), entity.getPageSize());
+        mapper.select(entity);
+
+        return page;
+    }
+
+    /**
+     * @author summer
      * @date 2017/12/29 下午3:43
      * @param entity 用于封装条件的实体类
      * @param orderBy 排序方式 例如: "update_time desc"
@@ -337,6 +392,26 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         }
 
         entity.setIsDeleted(T.DELETED_FALSE);
+
+        Page<T> page = PageHelper.startPage(entity.getPageNum(), entity.getPageSize(), orderBy);
+        mapper.select(entity);
+
+        return page;
+    }
+
+    /**
+     * @author summer
+     * @date 2018/8/21 下午2:03
+     * @description 完全根据查询条件查询符合条件的分页信息, 不会自动过滤被标记成删除的字段
+     * @param entity 条件实体
+     * @param orderBy 排序方式
+     * @return com.github.pagehelper.Page<T>
+     * @version V1.0.0-RELEASE
+     */
+    public Page<T> findPageAll(T entity, String orderBy){
+        if(entity == null){
+            return null;
+        }
 
         Page<T> page = PageHelper.startPage(entity.getPageNum(), entity.getPageSize(), orderBy);
         mapper.select(entity);
@@ -383,6 +458,45 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
 
         // 返回有排序值的结果
         return findPage(entity, getOrderBy(pageable.getSort()));
+    }
+
+    /**
+     * @author summer
+     * @date 2018/8/21 下午2:06
+     * @description 完全根据查询条件查询出符合条件的分页信息, 不会过滤掉被标记成已删除的数据
+     * @param entity 实体条件
+     * @param pageable 分页信息
+     * @return com.github.pagehelper.Page<T>
+     * @version V1.0.0-RELEASE
+     */
+    @Override
+    public Page<T> findPageAll(T entity, Pageable pageable) {
+        // 校验实体对象
+        if(entity == null){
+            return null;
+        }
+
+        // 校验排序对象
+        if(pageable == null){
+            return findPageAll(entity);
+        }
+
+        Integer pageSize = pageable.getPageSize();
+        pageSize = (pageSize == null || pageSize <= 0) ? T.PAGE_SIZE_DEFAULT : pageSize;
+        Integer pageNumber = pageable.getPageNumber();
+        pageNumber = (pageNumber == null || pageNumber <= 0) ? T.PAGE_NUM_DEFAULT : pageNumber;
+
+        // 设置分页信息
+        entity.setPageSize(pageSize);
+        entity.setPageNum(pageNumber);
+
+        // 如果没有排序值
+        if(pageable.getSort().isUnsorted()){
+            return findPageAll(entity);
+        }
+
+        // 返回有排序值的结果
+        return findPageAll(entity, getOrderBy(pageable.getSort()));
     }
 
     /**
@@ -444,34 +558,17 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
      */
     @Override
     public PageInfo<T> findPageInfo(T entity, Pageable pageable) {
-        // 校验实体对象
         if(entity == null){
             return null;
         }
 
-        entity.setIsDeleted(T.DELETED_FALSE);
-
-        // 校验排序对象
-        if(pageable == null){
-            return findPageInfo(entity);
+        Page<T> page = findPage(entity, pageable);
+        PageInfo<T> pageInfo = null;
+        if(page != null){
+            pageInfo = new PageInfo<>(page);
         }
 
-        Integer pageSize = pageable.getPageSize();
-        pageSize = (pageSize == null || pageSize <= 0) ? T.PAGE_SIZE_DEFAULT : pageSize;
-        Integer pageNumber = pageable.getPageNumber();
-        pageNumber = (pageNumber == null || pageNumber <= 0) ? T.PAGE_NUM_DEFAULT : pageNumber;
-
-        // 设置分页信息
-        entity.setPageSize(pageSize);
-        entity.setPageNum(pageNumber);
-
-        // 如果没有排序值
-        if(pageable.getSort() == null || pageable.getSort().isUnsorted()){
-            return findPageInfo(entity);
-        }
-
-        // 返回有排序的查询结果
-        return findPageInfo(entity, getOrderBy(pageable.getSort()));
+        return pageInfo;
     }
 
     /**

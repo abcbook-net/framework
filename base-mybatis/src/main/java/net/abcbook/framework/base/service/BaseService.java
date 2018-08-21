@@ -128,6 +128,16 @@ public interface BaseService<T> {
     T getByParameters(T entity);
 
     /**
+     * @author summer
+     * @date 2018/8/21 下午1:57
+     * @description 完全根据查询条件进行查询, 不会自动排查被标记成已删除的记录
+     * @param entity 查询条件
+     * @return T
+     * @version V1.0.0-RELEASE
+     */
+    T getAllByParameters(T entity);
+
+    /**
      * 根据传入的实体对象条件, 查询出符合条件的数据的集合
      * @author summer
      * @date 2017/12/29 下午3:17
@@ -135,6 +145,16 @@ public interface BaseService<T> {
      * @return java.util.List<T>
      */
     List<T> list(T entity);
+
+    /**
+     * @author summer
+     * @date 2018/8/21 下午1:54
+     * @description 完全根据查询条件进行查询, 不会自动排查被标记成已删除的记录
+     * @param entity 查询条件
+     * @return java.util.List<T>
+     * @version V1.0.0-RELEASE
+     */
+    List<T> listAll(T entity);
 
     /**
      * 根据传入的实体条件 / 页码 / 每页显示的数据量
@@ -145,6 +165,16 @@ public interface BaseService<T> {
      * @return com.github.pagehelper.Page<T>
      */
     Page<T> findPage(T entity);
+
+    /**
+     * @author summer
+     * @date 2018/8/21 下午2:00
+     * @description 根据传入的查询条件查询出所有满足条件的信息, 并进行分页, 不会自动过滤被标记成已删除的数据
+     * @param entity
+     * @return com.github.pagehelper.Page<T>
+     * @version V1.0.0-RELEASE
+     */
+    Page<T> findPageAll(T entity);
 
     /**
      * 根据传入的实体条件 / 页码 / 每页显示的数据量
@@ -167,6 +197,17 @@ public interface BaseService<T> {
      * @return com.github.pagehelper.Page<T>
      */
     Page<T> findPage(T entity, Pageable pageable);
+
+    /**
+     * @author summer
+     * @date 2018/8/21 下午2:06
+     * @description 完全根据查询条件查询出符合条件的分页信息, 不会过滤掉被标记成已删除的数据
+     * @param entity 实体条件
+     * @param pageable 分页信息
+     * @return com.github.pagehelper.Page<T>
+     * @version V1.0.0-RELEASE
+     */
+    Page<T> findPageAll(T entity, Pageable pageable);
 
     /**
      * 根据传入的实体条件 / 页码 / 每页显示的数据量
