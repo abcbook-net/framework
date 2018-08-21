@@ -202,7 +202,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         }
 
         // 防止误标示删除
-        entity.setIsDeleted(T.DELETED_FALSE);
+        entity.setIsDeleted(null);
 
         mapper.updateByPrimaryKey(entity);
 
@@ -224,7 +224,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         }
 
         // 防止误标示删除
-        entity.setIsDeleted(T.DELETED_FALSE);
+        entity.setIsDeleted(null);
 
         Integer result = mapper.updateByPrimaryKeySelective(entity);
         // 当无法正常更新时返回 null
