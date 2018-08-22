@@ -573,6 +573,45 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
 
     /**
      * @author summer
+     * @date 2018/8/22 上午11:02
+     * @description 根据传入的查询条件, 查询出符合条件的数据的数量
+     * @param entity 查询条件
+     * @return java.lang.Integer
+     * @version V1.0.0-RELEASE
+     */
+    @Override
+    public Integer count(T entity){
+        if(entity == null){
+            return 0;
+        }
+
+        entity.setIsDeleted(T.DELETED_FALSE);
+
+        return mapper.selectCount(entity);
+    }
+
+    /**
+     * @author summer
+     * @date 2018/8/22 上午11:02
+     * @description 根据传入的查询条件, 查询出符合条件的数据的数量
+     * 不会自动过滤掉被标记成已删除的数据
+     * @param entity 查询条件
+     * @return java.lang.Integer
+     * @version V1.0.0-RELEASE
+     */
+    @Override
+    public Integer countAll(T entity){
+        if(entity == null){
+            return 0;
+        }
+
+        return mapper.selectCount(entity);
+    }
+
+
+
+    /**
+     * @author summer
      * @date 2018/8/21 上午2:04
      * @description 根据传入的排序对象, 获取排序结构的字符串
      * @param sort 排序对象

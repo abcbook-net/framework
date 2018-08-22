@@ -239,4 +239,25 @@ public interface BaseService<T> {
      * @return com.github.pagehelper.Page<T>
      */
      PageInfo<T> findPageInfo(T entity, Pageable pageable);
+
+    /**
+     * @author summer
+     * @date 2018/8/22 上午11:02
+     * @description 根据传入的查询条件, 查询出符合条件的数据的数量
+     * @param entity 查询条件
+     * @return java.lang.Integer
+     * @version V1.0.0-RELEASE
+     */
+    Integer count(T entity);
+
+    /**
+     * @author summer
+     * @date 2018/8/22 上午11:02
+     * @description 根据传入的查询条件, 查询出符合条件的数据的数量
+     * 不会自动过滤掉被标记成已删除的数据
+     * @param entity 查询条件
+     * @return java.lang.Integer
+     * @version V1.0.0-RELEASE
+     */
+    Integer countAll(T entity);
 }
