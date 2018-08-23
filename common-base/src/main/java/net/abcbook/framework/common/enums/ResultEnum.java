@@ -28,7 +28,7 @@ public enum ResultEnum implements CodeEnumInteger{
     USERNAME_OR_PASSWORD_NOT_MATCHING(301,"用户名或密码不正确"),
 
     /** 用户名不存 */
-    USER_UNKNOWN_ACCOUNT(310, "用户名不存"),
+    USER_UNKNOWN_ACCOUNT(310, "用户名不存在"),
     /** 密码不正确 */
     USER_INCORRECT_CREDENTIALS(311, "密码不正确"),
     /** 验证码错误 */

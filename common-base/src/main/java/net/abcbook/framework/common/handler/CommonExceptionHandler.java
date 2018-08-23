@@ -7,6 +7,7 @@ import net.abcbook.framework.common.exception.CommonException;
 import net.abcbook.framework.common.exception.LoginException;
 import net.abcbook.framework.common.result.Result;
 import net.abcbook.framework.common.util.ResultUtil;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -55,9 +56,9 @@ public class CommonExceptionHandler {
         /**
          * 处理 shiro 的权限异常连接
          */
-//        }else if (e instanceof UnauthorizedException) {
-//            UnauthorizedException unauthorizedException = (UnauthorizedException) e;
-//            return ResultUtil.error(ResultEnum.USER_PERMISSION_DENIED);
+        }else if (e instanceof UnauthorizedException) {
+            UnauthorizedException unauthorizedException = (UnauthorizedException) e;
+            return ResultUtil.error(ResultEnum.USER_PERMISSION_DENIED.getCode(), unauthorizedException.getMessage());
         /**
          * 处理权限异常
          */

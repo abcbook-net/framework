@@ -22,9 +22,10 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile("commons-codec:commons-codec:${commonCodecVersion}")
 
+    // shiro 权限校验异常需要 shiro-core
+    compile("org.apache.shiro:shiro-core:${shiroSpringVersion}")
+
     // 测试
 //	testCompile('org.springframework.boot:spring-boot-starter-test')
-
-
 
 }
