@@ -55,6 +55,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
             return null;
         }
 
+        // 设置对象的伪删除标识为未删除状态
+        entity.setIsDeleted(T.DELETED_FALSE);
+
         /*
          * 根据传入的对象是否有 id 来选择执行添加操作还是修改操作
          * 如果有 id, 说明这是已有数据, 则执行添加操作, 否则执行修改操作
@@ -83,6 +86,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
             return null;
         }
 
+        // 设置对象的伪删除标识为未删除状态
+        entity.setIsDeleted(T.DELETED_FALSE);
+
         perInsert(entity);
         mapper.insert(entity);
 
@@ -101,6 +107,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         if(entity == null){
             return null;
         }
+
+        // 设置对象的伪删除标识为未删除状态
+        entity.setIsDeleted(T.DELETED_FALSE);
 
         perInsert(entity);
         mapper.insertSelective(entity);
