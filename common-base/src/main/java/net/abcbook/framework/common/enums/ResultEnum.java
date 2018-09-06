@@ -71,7 +71,16 @@ public enum ResultEnum implements CodeEnumInteger{
     /** 数据校验未通过 */
     VALIDATE_ERROR(550, "数据校验未通过"),
     /** 数据校验未通过集合 */
-    VALIDATE_ERROR_LIST(560, "数据校验未通过集合")
+    VALIDATE_ERROR_LIST(560, "数据校验未通过集合"),
+
+    /**
+     * 6XX 错误, 并发错误
+     */
+    /** 并发请求错误 */
+    CONCURRENT_ERROR(600, "并发请求错误"),
+    /** 并发请求, 当前锁被占用 */
+    CONCURRENT_ERROR_BUSY(601, "没有拿到锁"),
+
     ;
 
     private Integer code;
