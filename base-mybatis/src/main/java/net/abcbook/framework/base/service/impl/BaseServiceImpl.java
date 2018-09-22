@@ -36,7 +36,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
     public void perInsert(T entity) {
         // 创建全局唯一 id 生成器对象, 用于生成 long 类型的 id
         // 注意; 此处的 数据中心和机器的 id 均设置成了 0
-        Snowflake snowflake = new Snowflake(WORKER_ID, DATACENTER_ID);
+        Snowflake snowflake = Snowflake.getInstance(WORKER_ID, DATACENTER_ID);
         // 设置 id
         entity.setId(snowflake.nextId());
     }
@@ -131,6 +131,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
             return null;
         }
         T entity = mapper.selectByPrimaryKey(id);
+        if (entity == null) {
+            return null;
+        }
         entity.setIsDeleted(T.DELETED_TRUE);
 
         return mapper.updateByPrimaryKeySelective(entity);

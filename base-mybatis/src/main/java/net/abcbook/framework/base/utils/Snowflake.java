@@ -66,7 +66,7 @@ public class Snowflake {
      * @param datacenterId 数据中心ID (0~31)
      * @description
      */
-    public Snowflake(long workerId, long datacenterId) {
+    private Snowflake(long workerId, long datacenterId) {
         if (workerId > maxWorkerId || workerId < 0) {
             throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
         }
@@ -77,6 +77,30 @@ public class Snowflake {
         this.datacenterId = datacenterId;
     }
 
+    /**
+     * 定义 snowflake 对象, 用于单例返回
+     */
+    private static Snowflake instance = null;
+
+    /**
+     * @author summer
+     * @date 2018/9/7 下午4:19
+     * @description 饿汉模式, 修改生成 Snowflake 对象
+     * @param workerId 机器 id
+     * @param datacenterId 数据中心 id
+     * @return net.abcbook.framework.base.utils.Snowflake
+     * @version V1.0.0-RELEASE
+     */
+    public static Snowflake getInstance(long workerId, long datacenterId){
+        if (instance == null){
+            synchronized (Snowflake.class){
+                if (instance == null) {
+                    instance = new Snowflake(workerId, datacenterId);
+                }
+            }
+        }
+        return instance;
+    }
 
     /**
      * @author summer
