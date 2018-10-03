@@ -13,11 +13,6 @@ import java.util.List;
  */
 public interface BaseService<T> {
 
-    /** 机器的 id 编号 */
-    Integer WORKER_ID = 0;
-    /** 数据中心的 id 编号 */
-    Integer DATACENTER_ID = 0;
-
     /**
      * 在插入数据之前对数据的处理
      * @param entity 需要保存的数据

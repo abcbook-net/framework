@@ -36,7 +36,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
     public void perInsert(T entity) {
         // 创建全局唯一 id 生成器对象, 用于生成 long 类型的 id
         // 注意; 此处的 数据中心和机器的 id 均设置成了 0
-        Snowflake snowflake = Snowflake.getInstance(WORKER_ID, DATACENTER_ID);
+        Snowflake snowflake = Snowflake.getInstance();
         // 设置 id
         entity.setId(snowflake.nextId());
     }
@@ -494,9 +494,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
         }
 
         Integer pageSize = pageable.getPageSize();
-        pageSize = (pageSize == null || pageSize <= 0) ? T.PAGE_SIZE_DEFAULT : pageSize;
+        pageSize = (pageSize <= 0) ? T.PAGE_SIZE_DEFAULT : pageSize;
         Integer pageNumber = pageable.getPageNumber();
-        pageNumber = (pageNumber == null || pageNumber <= 0) ? T.PAGE_NUM_DEFAULT : pageNumber;
+        pageNumber = (pageNumber <= 0) ? T.PAGE_NUM_DEFAULT : pageNumber;
 
         // 设置分页信息
         entity.setPageSize(pageSize);
@@ -546,10 +546,12 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
      */
     @Override
     public PageInfo<T> findPageInfo(T entity, String orderBy) {
+        // 参数校验
         if(entity == null){
             return null;
         }
 
+        // 查询分页信息
         Page<T> page = findPage(entity, orderBy);
         PageInfo<T> pageInfo = null;
         if(page != null){
@@ -570,10 +572,12 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
      */
     @Override
     public PageInfo<T> findPageInfo(T entity, Pageable pageable) {
+        // 参数校验
         if(entity == null){
             return null;
         }
 
+        // 根据条件查询分页信息
         Page<T> page = findPage(entity, pageable);
         PageInfo<T> pageInfo = null;
         if(page != null){

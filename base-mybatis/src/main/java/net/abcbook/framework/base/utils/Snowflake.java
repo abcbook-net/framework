@@ -59,6 +59,11 @@ public class Snowflake {
     /** 上次生成ID的时间截 */
     private long lastTimestamp = -1L;
 
+    /** 机器 id */
+    private static final long DEFAULT_WORKER_ID = 0L;
+    /** 数据中心 id */
+    private static final long DEFAULT_DATACENTER_ID = 0L;
+
     /**
      * @author summer
      * @date 2017/12/29 下午1:20
@@ -86,16 +91,14 @@ public class Snowflake {
      * @author summer
      * @date 2018/9/7 下午4:19
      * @description 饿汉模式, 修改生成 Snowflake 对象
-     * @param workerId 机器 id
-     * @param datacenterId 数据中心 id
      * @return net.abcbook.framework.base.utils.Snowflake
      * @version V1.0.0-RELEASE
      */
-    public static Snowflake getInstance(long workerId, long datacenterId){
+    public static Snowflake getInstance(){
         if (instance == null){
             synchronized (Snowflake.class){
                 if (instance == null) {
-                    instance = new Snowflake(workerId, datacenterId);
+                    instance = new Snowflake(DEFAULT_DATACENTER_ID, DEFAULT_DATACENTER_ID);
                 }
             }
         }
