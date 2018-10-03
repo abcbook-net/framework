@@ -18,7 +18,11 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author summer
@@ -75,9 +79,18 @@ public class CommonExceptionHandler {
         /**
          * 数据校验异常
          */
-        } else if (e instanceof MethodArgumentNotValidException){
+        } else if (e instanceof MethodArgumentNotValidException) {
             BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
             return ResultUtil.validateError(bindingResult.getFieldError());
+        /**
+         * Hibernate 数据校验异常
+         */
+        } else if (e instanceof ConstraintViolationException){
+            Set<ConstraintViolation<?>> constraintViolationSet = ((ConstraintViolationException) e).getConstraintViolations();
+            for (ConstraintViolation constraintViolation : constraintViolationSet){
+                return ResultUtil.error(ResultEnum.PARAM_ERROR.getCode(), constraintViolation.getMessage());
+            }
+            return ResultUtil.error(ResultEnum.PARAM_ERROR.getCode(), e.getMessage());
         /**
          * 处理路径未找到的问题
          */
