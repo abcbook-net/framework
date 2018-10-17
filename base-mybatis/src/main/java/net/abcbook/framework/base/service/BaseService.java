@@ -3,6 +3,7 @@ package net.abcbook.framework.base.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -227,6 +228,7 @@ public interface BaseService<T> {
     /**
      * 根据传入的实体条件 / 页码 / 每页显示的数据量
      * 查询出符合条件的分页对象
+     *
      * @author summer
      * @date 2017/12/29 下午3:43
      * @param entity 用于封装条件的实体类
@@ -255,4 +257,15 @@ public interface BaseService<T> {
      * @version V1.0.0-RELEASE
      */
     Integer countAll(T entity);
+
+    /**
+     * 根据传入的排序对象, 获取排序结构的字符串
+     *
+     * @author summer
+     * @date 2018/8/21 上午2:04
+     * @param sort 排序对象
+     * @return java.lang.String
+     * @version V1.0.0-RELEASE
+     */
+    String getOrderBy(Sort sort);
 }

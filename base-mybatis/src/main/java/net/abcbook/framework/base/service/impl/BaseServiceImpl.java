@@ -634,7 +634,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseModel> imple
      * @return java.lang.String
      * @version V1.0.0-RELEASE
      */
-    private String getOrderBy(Sort sort){
+    @Override
+    public String getOrderBy(Sort sort){
         if(sort == null || sort.isUnsorted()){
             return "";
         }
